@@ -1,5 +1,127 @@
+<script lang="ts">
+    import { onMount } from "svelte";
+
+    interface FormError {
+        field: string;
+        message: string;
+    }
+
+    interface ErrorResponse {
+        detail: any;
+    }
+
+    interface Course {
+        id: number;
+        name: string;
+        code: string;
+        description: string;
+    }
+
+    let name: string = "";
+    let code: string = "";
+    let description: string = "";
+    let errors: FormError[] = [];
+    let courses: Course[] | null = null;
+
+    onMount(async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/courses");
+
+            if (!response.ok) {
+                const error_data = await response.json();
+                throw Error(error_data.detail || `Error ${response.status}`);
+            }
+
+            courses = await response.json();
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    function validateForm(): boolean {
+        errors = [];
+
+        if (!name) {
+            errors.push({
+                field: "name",
+                message: "El nombre del curso no puede estar vacío",
+            });
+        } else if (name.length < 3 || name.length > 40) {
+            errors.push({
+                field: "name",
+                message: "El nombre tiene que tener entre 3 y 15 caracteres",
+            });
+        } else if (courses && courses.some((course) => course.name === name)) {
+            errors.push({
+                field: "name",
+                message: "El nombre del curso ya está en uso",
+            });
+        }
+
+        if (!code) {
+            errors.push({
+                field: "code",
+                message: "El código del curso no puede estar vacío",
+            });
+        } else if (code.length < 3 || code.length > 10) {
+            errors.push({
+                field: "code",
+                message:
+                    "El código del curso tiene que tener entre 3 y 10 caracteres",
+            });
+        }
+
+        if (!description) {
+            errors.push({
+                field: "description",
+                message: "La descripción del curso no puede estar vacía",
+            });
+        } else if (description.length < 5 || description.length > 200) {
+            errors.push({
+                field: "name",
+                message:
+                    "La descripción del curso tiene que tener entre 5 y 200 caracteres",
+            });
+        }
+
+        return errors.length === 0;
+    }
+
+    async function createCourse() {
+        if (validateForm()) {
+            try {
+                const res: Response = await fetch(
+                    "http://127.0.0.1:8000/courses",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, code, description }),
+                    },
+                );
+
+                if (res.status === 500) {
+                    throw Error("Internal server error");
+                }
+
+                const data: ErrorResponse = await res.json();
+
+                if (!res.ok) {
+                    console.error(data.detail);
+                } else {
+                    console.log("Course created!");
+                }
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        } else {
+            console.error(errors);
+        }
+    }
+</script>
+
 <div class="form-box">
-    <form>
+    <form on:submit={createCourse}>
         <div class="form-group">
             <header>Crear un nuevo curso</header>
         </div>
@@ -8,9 +130,10 @@
             <input
                 type="text"
                 id="name"
+                bind:value={name}
                 placeholder="Ingeniería del software"
                 minlength="3"
-                maxlength="15"
+                maxlength="40"
                 required
             />
         </div>
@@ -20,6 +143,7 @@
             <input
                 type="text"
                 id="code"
+                bind:value={code}
                 placeholder="INSO"
                 minlength="3"
                 maxlength="10"
@@ -31,7 +155,7 @@
             <label for="description">Descripción</label>
             <textarea
                 id="description"
-                name="Descripción"
+                bind:value={description}
                 rows="5"
                 cols="30"
                 placeholder="Grado de Ingeniería del software"
@@ -54,7 +178,6 @@
         font-style: inherit;
         font-family: inherit;
     }
-
 
     .form-box {
         background: white;
