@@ -7,7 +7,7 @@
     "npm:svelte-check@^4.3.2": "4.3.3_svelte@5.41.1__acorn@8.15.0_typescript@5.9.3",
     "npm:svelte@^5.39.5": "5.41.1_acorn@8.15.0",
     "npm:typescript@^5.9.2": "5.9.3",
-    "npm:vite@^7.1.7": "7.1.11_picomatch@4.0.3"
+    "npm:vite@^7.1.11": "7.1.11_picomatch@4.0.3"
   },
   "npm": {
     "@esbuild/aix-ppc64@0.25.11": {
@@ -617,7 +617,7 @@
         "npm:svelte-check@^4.3.2",
         "npm:svelte@^5.39.5",
         "npm:typescript@^5.9.2",
-        "npm:vite@^7.1.7"
+        "npm:vite@^7.1.11"
       ]
     }
   }
