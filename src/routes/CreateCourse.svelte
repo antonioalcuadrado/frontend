@@ -1,34 +1,49 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    // object that stores the error of each field of the form
     interface FormError {
-        field: string;
-        message: string;
-    }
-
-    interface ErrorResponse {
-        detail: any;
-    }
-
-    interface Course {
-        id: number;
         name: string;
         code: string;
         description: string;
     }
 
-    let name: string = "";
-    let code: string = "";
-    let description: string = "";
-    let errors: FormError[] = [];
+    // schema of the errors response
+    interface ErrorResponse {
+        detail: any;
+    }
+
+    // schema of the course fetch response
+    interface Course {
+        id: number;
+        name: string;
+        code: string;
+        description?: string;
+    }
+
+    // schema of the post data
+    interface CoursePost {
+        name: string;
+        code: string;
+        description?: string;
+    }
+
+    let name: string = $state("");
+    let code: string = $state("");
+    let description: string = $state("");
+    let errors: FormError = $state({ name: "", code: "", description: "" });
+
     let courses: Course[] | null = null;
 
+    // fetch courses from db when the module loads
     onMount(async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/courses");
+            const response: Response = await fetch(
+                "http://127.0.0.1:8000/courses",
+            );
 
             if (!response.ok) {
-                const error_data = await response.json();
+                const error_data: ErrorResponse = await response.json();
                 throw Error(error_data.detail || `Error ${response.status}`);
             }
 
@@ -39,89 +54,94 @@
     });
 
     function validateForm(): boolean {
-        errors = [];
-
+        // validate name
+        errors.name = "";
         if (!name) {
-            errors.push({
-                field: "name",
-                message: "El nombre del curso no puede estar vacío",
-            });
-        } else if (name.length < 3 || name.length > 40) {
-            errors.push({
-                field: "name",
-                message: "El nombre tiene que tener entre 3 y 15 caracteres",
-            });
-        } else if (courses && courses.some((course) => course.name === name)) {
-            errors.push({
-                field: "name",
-                message: "El nombre del curso ya está en uso",
-            });
+            errors.name = "El nombre del curso no puede estar vacío";
+        } else if (name.length < 3 || name.length > 70) {
+            errors.name = "El nombre tiene que tener entre 3 y 70 caracteres";
+        } else if (
+            courses &&
+            courses.some(
+                (course) => course.name.toLowerCase() === name.toLowerCase(),
+            )
+        ) {
+            errors.name = "El nombre del curso ya está en uso";
         }
 
+        // validate code
+        errors.code = "";
         if (!code) {
-            errors.push({
-                field: "code",
-                message: "El código del curso no puede estar vacío",
-            });
+            errors.code = "El código del curso no puede estar vacío";
         } else if (code.length < 3 || code.length > 10) {
-            errors.push({
-                field: "code",
-                message:
-                    "El código del curso tiene que tener entre 3 y 10 caracteres",
-            });
+            errors.code =
+                "El código del curso tiene que tener entre 3 y 10 caracteres";
+        } else if (
+            courses &&
+            courses.some(
+                (course) => course.code.toLowerCase() === code.toLowerCase(),
+            )
+        ) {
+            errors.code = "El código del curso ya está en uso";
         }
 
-        if (!description) {
-            errors.push({
-                field: "description",
-                message: "La descripción del curso no puede estar vacía",
-            });
-        } else if (description.length < 5 || description.length > 200) {
-            errors.push({
-                field: "name",
-                message:
-                    "La descripción del curso tiene que tener entre 5 y 200 caracteres",
-            });
+        // validate description
+        errors.description = "";
+        if (
+            description &&
+            (description.length < 5 || description.length > 200)
+        ) {
+            errors.description =
+                "La descripción del curso tiene que tener entre 5 y 200 caracteres";
         }
 
-        return errors.length === 0;
+        // return true if all errors are empty
+        return Object.values(errors).every((error) => !error);
     }
 
     async function createCourse() {
         if (validateForm()) {
             try {
+                // create the data object
+                let course_data: CoursePost = {
+                    name,
+                    code: code.toUpperCase(),
+                };
+                if (description) {
+                    course_data.description = description;
+                }
+
+                // post the data
                 const res: Response = await fetch(
                     "http://127.0.0.1:8000/courses",
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name, code, description }),
+                        body: JSON.stringify(course_data),
                     },
                 );
 
+                // handle response
                 if (res.status === 500) {
                     throw Error("Internal server error");
-                }
-
-                const data: ErrorResponse = await res.json();
-
-                if (!res.ok) {
+                } else if (!res.ok) {
+                    const data: ErrorResponse = await res.json();
                     console.error(data.detail);
                 } else {
+                    const data: ErrorResponse = await res.json();
                     console.log("Course created!");
+                    console.log(data);
                 }
             } catch (error) {
                 console.error(error);
                 throw error;
             }
-        } else {
-            console.error(errors);
         }
     }
 </script>
 
 <div class="form-box">
-    <form on:submit={createCourse}>
+    <form onsubmit={createCourse}>
         <div class="form-group">
             <header>Crear un nuevo curso</header>
         </div>
@@ -133,9 +153,12 @@
                 bind:value={name}
                 placeholder="Ingeniería del software"
                 minlength="3"
-                maxlength="40"
+                maxlength="70"
                 required
             />
+            {#if errors.name}
+                <span>{errors.name}</span>
+            {/if}
         </div>
 
         <div class="form-group">
@@ -149,6 +172,9 @@
                 maxlength="10"
                 required
             />
+            {#if errors.code}
+                <span>{errors.code}</span>
+            {/if}
         </div>
 
         <div class="form-group">
@@ -162,6 +188,9 @@
                 minlength="5"
                 maxlength="200"
             ></textarea>
+            {#if errors.description}
+                <span>{errors.description}</span>
+            {/if}
         </div>
 
         <div class="form-group">
@@ -234,5 +263,10 @@
 
     .form-group button:hover {
         box-shadow: 6px 6px 0 #000;
+    }
+
+    .form-group span {
+        color: red;
+        text-decoration: underline;
     }
 </style>
