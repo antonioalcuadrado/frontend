@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte"
-    import { getCourse, postCourse } from "../hooks/course"
+    import { get } from "svelte/store"
+    import { getCourses, postCourse } from "$lib/features/courses/api/fetchs.js"
 
     // object that stores the error of each field of the form
     interface FormError {
@@ -38,7 +39,13 @@
 
     // fetch courses from db when the module loads
     onMount(async () => {
-        courses = await getCourse()
+        const { data, loading, error } = await getCourses()
+        data.subscribe(value => {
+            if (value) {
+                courses = value
+                console.log(courses)
+            }
+        })
     });
 
     function validateForm(): boolean {
@@ -89,6 +96,7 @@
 
     async function createCourse() {
         if (validateForm()) {
+            console.log(courses)
             postCourse(name, code.toUpperCase(), description)
         }
     }
