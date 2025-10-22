@@ -1,34 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte"
     import { get } from "svelte/store"
-    import { getCourses, postCourse } from "$lib/features/courses/api/fetchs.js"
-
-    // object that stores the error of each field of the form
-    interface FormError {
-        name: string;
-        code: string;
-        description: string;
-    }
-
-    // schema of the errors response
-    interface ErrorResponse {
-        detail: any;
-    }
-
-    // schema of the course fetch response
-    interface Course {
-        id: number;
-        name: string;
-        code: string;
-        description?: string;
-    }
-
-    // schema of the post data
-    interface CoursePost {
-        name: string;
-        code: string;
-        description?: string;
-    }
+    import { getCourses, postCourse } from "$lib/features/courses/utils/fetchs"
+    import { validateForm } from "$lib/features/courses/utils/validators"
 
     let name = $state("");
     let code = $state("");
@@ -46,57 +20,16 @@
                 console.log(courses)
             }
         })
-    });
+    }); 
 
-    function validateForm(): boolean {
-        // validate name
-        errors.name = "";
-        if (!name) {
-            errors.name = "El nombre del curso no puede estar vacío";
-        } else if (name.length < 3 || name.length > 70) {
-            errors.name = "El nombre tiene que tener entre 3 y 70 caracteres";
-        } else if (
-            courses &&
-            courses.some(
-                (course) => course.name.toLowerCase() === name.toLowerCase(),
-            )
-        ) {
-            errors.name = "El nombre del curso ya está en uso";
-        }
-
-        // validate code
-        errors.code = "";
-        if (!code) {
-            errors.code = "El código del curso no puede estar vacío";
-        } else if (code.length < 3 || code.length > 10) {
-            errors.code =
-                "El código del curso tiene que tener entre 3 y 10 caracteres";
-        } else if (
-            courses &&
-            courses.some(
-                (course) => course.code.toLowerCase() === code.toLowerCase(),
-            )
-        ) {
-            errors.code = "El código del curso ya está en uso";
-        }
-
-        // validate description
-        errors.description = "";
-        if (
-            description &&
-            (description.length < 5 || description.length > 200)
-        ) {
-            errors.description =
-                "La descripción del curso tiene que tener entre 5 y 200 caracteres";
-        }
-
-        // return true if all errors are empty
-        return Object.values(errors).every((error) => !error);
+    function todosVacios(obj) {
+        return Object.values(obj).every(value => value === "");
     }
 
     async function createCourse() {
-        if (validateForm()) {
-            console.log(courses)
+        errors = validateForm(name, code, description, courses)
+
+        if (todosVacios(errors)) {
             postCourse(name, code.toUpperCase(), description)
         }
     }
