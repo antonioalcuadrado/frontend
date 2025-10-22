@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount } from "svelte"
+    import { getCourse, postCourse } from "../hooks/course"
 
     // object that stores the error of each field of the form
     interface FormError {
@@ -28,29 +29,16 @@
         description?: string;
     }
 
-    let name: string = $state("");
-    let code: string = $state("");
-    let description: string = $state("");
-    let errors: FormError = $state({ name: "", code: "", description: "" });
+    let name = $state("");
+    let code = $state("");
+    let description = $state("");
+    let errors = $state({ name: "", code: "", description: "" });
 
     let courses: Course[] | null = null;
 
     // fetch courses from db when the module loads
     onMount(async () => {
-        try {
-            const response: Response = await fetch(
-                "http://127.0.0.1:8000/courses",
-            );
-
-            if (!response.ok) {
-                const error_data: ErrorResponse = await response.json();
-                throw Error(error_data.detail || `Error ${response.status}`);
-            }
-
-            courses = await response.json();
-        } catch (error) {
-            console.error(error);
-        }
+        courses = await getCourse()
     });
 
     function validateForm(): boolean {
@@ -101,41 +89,7 @@
 
     async function createCourse() {
         if (validateForm()) {
-            try {
-                // create the data object
-                let course_data: CoursePost = {
-                    name,
-                    code: code.toUpperCase(),
-                };
-                if (description) {
-                    course_data.description = description;
-                }
-
-                // post the data
-                const res: Response = await fetch(
-                    "http://127.0.0.1:8000/courses",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(course_data),
-                    },
-                );
-
-                // handle response
-                if (res.status === 500) {
-                    throw Error("Internal server error");
-                } else if (!res.ok) {
-                    const data: ErrorResponse = await res.json();
-                    console.error(data.detail);
-                } else {
-                    const data: ErrorResponse = await res.json();
-                    console.log("Course created!");
-                    console.log(data);
-                }
-            } catch (error) {
-                console.error(error);
-                throw error;
-            }
+            postCourse(name, code.toUpperCase(), description)
         }
     }
 </script>
