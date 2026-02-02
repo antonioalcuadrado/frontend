@@ -65,9 +65,13 @@
                 </select>
             </div>
             <div class="degree-selection-groups">
-                {#each selected_courses as course}
-                    <button class="option" value={course.id} on:click={handleClick}>{course.code}<p>></p></button>
-                {/each}    
+                {#if (!selected_courses.length)}
+                    <p class="no-course">No hay cursos</p>
+                {:else}
+                    {#each selected_courses as course}
+                        <button class="option" value={course.id} on:click={handleClick}>{course.code}<p>></p></button>
+                    {/each}
+                {/if}
             </div>
         </div>
         <div class="degree-schedule">
