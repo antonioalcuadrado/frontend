@@ -32,7 +32,7 @@
 
         {#if (classes)}
             <!-- Classes -->
-            {#each classes[0] as cls}
+            {#each classes as cls}
                 <div
                     class="class"
                     style="

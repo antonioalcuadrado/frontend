@@ -13,6 +13,8 @@
 
 <div>
     {#if (!loading)}
-        <Schedule classes={schedule} />
+        {#each schedule as sch}
+            <Schedule classes={sch} />
+        {/each}
     {/if}
 </div>
