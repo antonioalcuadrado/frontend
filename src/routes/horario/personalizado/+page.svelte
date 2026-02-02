@@ -7,7 +7,6 @@
     $: schedule = $horarioStore
 
     $: if (schedule) {
-        console.log(schedule)
         loading = false
     }
 </script>

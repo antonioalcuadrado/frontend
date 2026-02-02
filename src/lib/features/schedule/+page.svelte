@@ -9,7 +9,6 @@
     export let classes = []
 
     $: if (classes) {
-        console.log(classes)
         loading = false
     }
 

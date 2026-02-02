@@ -1,6 +1,6 @@
 // src/hooks/schedules.js
-
-const BASE_URL = 'http://127.0.0.1:8000/subjects'; // Adjust to your backend URL
+import { PUBLIC_API_URL } from '$env/static/public'
+const BASE_URL = `${PUBLIC_API_URL}subjects`; // Adjust to your backend URL
 
 // Fetch all custom schedules
 export async function fetchSchedules(subjects_id) {

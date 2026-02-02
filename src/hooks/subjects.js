@@ -1,10 +1,9 @@
 // src/hooks/subjects.js
-
-const BASE_URL = 'http://127.0.0.1:8000/courses'; // Adjust to your backend URL
+import { PUBLIC_API_URL } from '$env/static/public'
+const BASE_URL = `${PUBLIC_API_URL}courses`; // Adjust to your backend URL
 
 // Fetch all subjects
 export async function fetchSubjectsByCourse(id) {
-  console.log(id)
   try {
     const response = await fetch(`${BASE_URL}/${id}/subjects`);
     if (!response.ok) {
