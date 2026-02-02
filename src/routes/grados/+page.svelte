@@ -3,11 +3,12 @@
     import { Schedule } from '../../lib/features/schedule'
     import { SearchBar } from '../../lib/components'
     import { fetchGroups, fetchLecturesByGroup } from '../../hooks/groups'
-    import { onMount } from 'svelte';
+    import { onMount } from 'svelte'
+    import { getSemester } from '../../utils/getCurrentSemester'
 
     let groups = [] 
     let loading = true
-    let selected_semester = ''
+    let selected_semester = getSemester()
     let classes = []
 
     onMount(async () => {
@@ -19,16 +20,6 @@
             loading = false
         }
     })    
-
-    const hoy = new Date()
-    const mes = hoy.getMonth() + 1
-
-    // Select a initial semester
-    if (mes >= 9 || mes <= 1) {
-        selected_semester = "1"
-    } else if (mes >= 2 && mes <= 6) {
-        selected_semester = "2"
-    } 
 
     const handleClick = async (item) => {
         if (!selected_semester) alert("Selecciona un cuatrimestre")

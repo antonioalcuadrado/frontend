@@ -1,6 +1,7 @@
 <script>
     import './sass/page.sass'
     import { onMount } from 'svelte'
+    import { getSemester, filterSubjectsBySemester } from '../../utils'
     import { fetchCourses } from '../../hooks/courses'
     import { fetchSubjectsByCourse } from '../../hooks/subjects'
     import { fetchSchedules } from '../../hooks/schedules'
@@ -10,7 +11,7 @@
     import { goto } from '$app/navigation'
 
     let course_selected = ""
-    let semester_selected = ""
+    let semester_selected = getSemester()
     
     let courses = []
     let subjects = []
@@ -26,17 +27,7 @@
             loading = false
         }
     })
-
-    const hoy = new Date()
-    const mes = hoy.getMonth() + 1
-    
-    // Select an initial semester
-    if (mes >= 9 || mes <= 1) {
-        semester_selected = "1"
-    } else if (mes >= 2 && mes <= 6) {
-        semester_selected = "2"
-    }
-    
+ 
     const handleBarClick = (course) => {
         if (!course.code) {    
             course_selected = course
@@ -51,7 +42,7 @@
             const course = courses.find(c => c.code === course_selected)
             subjects = await fetchSubjectsByCourse(course.id)
             
-            subjects = subjects.filter(subject => subject.cuatrimester === parseInt(semester_selected))
+            subjects = filterSubjectsBySemester(subjects, semester_selected)
         } else {
             console.log("Error: Falta seleccionar el curso o el cuatrimestre")
         }
