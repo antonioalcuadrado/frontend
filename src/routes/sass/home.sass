@@ -1,0 +1,53 @@
+@use '../../app.sass' as *;
+
+html, body
+  margin: 0;
+
+.home-body
+  width: 90%;
+  height: 89.7dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 0 10%;
+  overflow: hidden;
+
+.home-body::before
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin-top: 9dvh;
+  background-image: url("/home.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.7) blur(3px);
+  z-index: -1;
+
+.home-body > *
+  position: relative;
+  z-index: 1;
+
+.home-body-title
+  color: black;
+  width: 40%;
+  font-family: $font-family;
+  font-weight: $font-weight-primary;
+  font-size: $font-title-size;
+
+.home-body-txt
+  color: black;
+  width: 40%
+  font-family: $font-family;
+  font-size: $font-primary-size;
+  font-weight: $font-weight-secondary;
+  margin-bottom: 3%;
+
+.home-body-create
+  background: $detail-color;
+  color: white;
+  border: none;
+  width: 15%;
+  padding: 0.3%;
+  font-family: $font-family;
+  font-size: $font-primary-size;
+  font-weight: $font-weight-secondary;
