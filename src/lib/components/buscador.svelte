@@ -1,21 +1,39 @@
 <script>
     export let handleClick
     export let data
+    export let doFetch = false
     
     let query = ''
 
     $: results = query.length > 0 ? data.filter(d => d.code.toLowerCase().includes(query.toLowerCase())) : []
+    
+    $: if (results.length > 0 && results[0].code != query) {
+        results = data.filter(d => d.code.toLowerCase().includes(query.toLowerCase()))
+    } else {
+        results = []
+        if (!doFetch) {
+            handleClick(query)
+        }
+    }
+
 
     const handleSelect = (item) => {
+        if (doFetch) {
+            handleClick(item)
+            query = ''
+
+            return
+        }
+        
+        query = item.code
         handleClick(item)
-        query = ''
     }
 </script>
 
 <div class="search-bar">
     <input class="input"
         type="text"
-        placeholder="Busca el alias de tu grado…"
+        placeholder="Busca el alias…"
         bind:value={query}
         autocomplete="off"
     />

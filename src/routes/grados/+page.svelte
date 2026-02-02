@@ -34,7 +34,7 @@
 {:else}
     <div class="degree">
         <section class="degree-search">
-            <SearchBar handleClick={handleClick} data={groups} />
+            <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
 
             <select class="semester-picker" bind:value={selected_semester}>
                 <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
