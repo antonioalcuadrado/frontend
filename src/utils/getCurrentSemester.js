@@ -1,5 +1,4 @@
-
-export const getSemester = () => {
+export default const getSemester = () => {
     const hoy = new Date()
     const mes = hoy.getMonth() + 1
     
@@ -9,5 +8,3 @@ export const getSemester = () => {
         return "2"
     }
 }
-
-
