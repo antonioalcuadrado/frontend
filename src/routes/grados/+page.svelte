@@ -20,11 +20,21 @@
         }
     })    
 
+    const hoy = new Date()
+    const mes = hoy.getMonth() + 1
+
+    // Select a initial semester
+    if (mes >= 9 || mes <= 1) {
+        selected_semester = "1"
+    } else if (mes >= 2 && mes <= 6) {
+        selected_semester = "2"
+    } 
+
     const handleClick = async (item) => {
         if (!selected_semester) alert("Selecciona un cuatrimestre")
         const id = item.id
 
-        classes = await fetchLecturesByGroup(id, parseInt(selected_semester.split(' ')[1]));
+        classes = await fetchLecturesByGroup(id, parseInt(selected_semester));
         
     }
 </script>
@@ -35,11 +45,10 @@
     <div class="degree">
         <section class="degree-search">
             <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
-
             <select class="semester-picker" bind:value={selected_semester}>
                 <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
-                <option class="option">Cuatrimestre 1</option>
-                <option class="option">Cuatrimestre 2</option>
+                <option class="option" value="1">Cuatrimestre 1</option>
+                <option class="option" value="2">Cuatrimestre 2</option>
             </select>
         </section>
         <div class="degree-schedule">
