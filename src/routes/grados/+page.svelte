@@ -3,11 +3,14 @@
     import { Schedule } from '../../lib/features/schedule'
     import { fetchDegrees } from '../../hooks/degrees'
     import { fetchCourses } from '../../hooks/courses'
+    import { fetchSubjectsByCourse } from '../../hooks/subjects'
+    import { fetchSchedules } from '../../hooks/schedules'
     import { onMount } from 'svelte';
 
     let degrees = []
     let all_courses = []
     let selected_courses = []
+    let classes = []
     let loading = true
     let error = ''
 
@@ -31,6 +34,19 @@
             selected_courses = all_courses.filter(course => course.degree_id === degree.id)
         }
     }
+
+    const handleClick = async (event) => {
+        const id = event.currentTarget.value
+        let subjects = await fetchSubjectsByCourse(id)
+
+        subjects = subjects.map(s => s.id)
+        if (!subjects.length) {
+            classes = []
+            return
+        }
+
+        classes = await fetchSchedules(subjects)
+    }
 </script>
 
 {#if loading}
@@ -50,12 +66,12 @@
             </div>
             <div class="degree-selection-groups">
                 {#each selected_courses as course}
-                    <h2 class="option">{course.code}<p>></p></h2>
+                    <button class="option" value={course.id} on:click={handleClick}>{course.code}<p>></p></button>
                 {/each}    
             </div>
         </div>
         <div class="degree-schedule">
-            <Schedule id="schedule" />
+            <Schedule id="schedule" classes={classes} />
         </div>
     </div>
 {/if}
