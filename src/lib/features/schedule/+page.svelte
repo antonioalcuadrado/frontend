@@ -10,6 +10,7 @@
 
     $: if (classes) {
         loading = false
+        console.log(classes)
     }
     
     const dayIndex = day => days.indexOf(day) + 1
@@ -40,7 +41,7 @@
                         grid-row: {cls.hour + 2} / span 2;
                     "
                 >
-                    <strong>{cls.subject_name}</strong>
+                    <strong>{cls.subject.name}</strong>
                     <div>{cls.hour + startHour}:00</div>
                 </div>
             {/each}
