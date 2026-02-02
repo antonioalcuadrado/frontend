@@ -4,7 +4,7 @@
     import { SearchBar } from '../../lib/components'
     import { fetchGroups, fetchLecturesByGroup } from '../../hooks/groups'
     import { onMount } from 'svelte'
-    import { getSemester } from '../../utils/getCurrentSemester'
+    import { getSemester } from '../../utils'
 
     let groups = [] 
     let loading = true
