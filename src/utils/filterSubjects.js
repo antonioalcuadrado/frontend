@@ -1,3 +1,5 @@
-export default const filterSubjectsBySemester = (subjects, semester) => {
+const filterSubjectsBySemester = (subjects, semester) => {
     return subjects.filter(subject => subject.cuatrimester === parseInt(semester))
-} 
+}
+
+export default filterSubjectsBySemester
