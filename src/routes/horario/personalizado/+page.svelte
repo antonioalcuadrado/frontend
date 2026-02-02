@@ -7,13 +7,14 @@
     $: schedule = $horarioStore
 
     $: if (schedule) {
-        console.log(schedule)
         loading = false
     }
 </script>
 
 <div>
     {#if (!loading)}
-        <Schedule classes={schedule} />
+        {#each schedule as sch}
+            <Schedule classes={sch} />
+        {/each}
     {/if}
 </div>

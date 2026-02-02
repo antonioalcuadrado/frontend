@@ -1,6 +1,6 @@
 // src/hooks/courses.js
-
-const BASE_URL = 'http://127.0.0.1:8000/courses'; // Adjust to your backend URL
+import { PUBLIC_API_URL } from '$env/static/public'
+const BASE_URL = `${PUBLIC_API_URL}courses`;
 
 // Fetch all courses
 export async function fetchCourses() {

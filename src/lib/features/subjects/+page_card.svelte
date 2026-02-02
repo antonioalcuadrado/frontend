@@ -6,7 +6,6 @@
 
     const handleClick = () => {
         onClick(subject)
-        console.log(subject)
     }
 </script>
 

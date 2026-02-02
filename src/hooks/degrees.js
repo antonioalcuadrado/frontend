@@ -1,6 +1,6 @@
 // src/lib/api/degrees.js
-
-const BASE_URL = 'http://127.0.0.1:8000/degrees'; // Adjust to your backend URL
+import { PUBLIC_API_URL } from '$env/static/public'
+const BASE_URL = `${PUBLIC_API_URL}degrees`; // Adjust to your backend URL
 
 // Fetch all degrees
 export async function fetchDegrees() {

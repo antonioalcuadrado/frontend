@@ -9,59 +9,63 @@ html, body
   height: auto;
   margin: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
-.degree-selection
-  width: 15%;
-  height: 92dvh;
-  background: $primary-color;
-
-.degree-selection-dropdown
-  background: $secondary-color;
-  padding: 5%;
-
-.degree-selection-dropdown select
-  width: 100%;
-  padding: 2%;
-  background: transparent;
-  color: white;
-  border: 0.15vw solid white;
-  font-family: $font-family;
-  font-size: $font-secondary-size;
-  font-weight: $font-weight-secondary;
-
-.degree-selection-dropdown select:hover
-  border: 0.15vw solid #f3f3f3;
-
-.degree-selection-dropdown select option
-  color: black;
-
-.degree-selection-groups
-  font-family: $font-family;
-  color: black;
-
-.degree-selection-groups .no-course
-  margin-left: 5%;
-  font-family: $font-family;
-  font-size: $font-secondary-size;
-  font-weight: $font-weight-secondary;
-
-.degree-selection-groups .option
+.degree-search
   display: flex;
-  margin: 0;
-  width: 100%;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 7% 0 7%;
-  background: transparent;
-  border: none;
-  border-bottom: 0.2vw solid white;
+  justify-content: space-between;
+  width: 100%;
+  height: 6dvh;
+  background: $secondary-color;
+
+.degree-search .search-bar
+  width: 20%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+
+.degree-search .input
+  width: 100%;
+  border: 2px solid $primary-color;
+  color: black;
+  font-family: $font-family;
   font-size: $font-primary-size;
-  font-weight: $font-weight-primary;
+  font-weight: $font-weight-secondary;
+  position: relative;
+
+.degree-search .results
+  display: flex;
+  flex-direction: column;
+  width: 20.45%;
+  top: 14.8%;
+  position: absolute;
+  z-index: 999;
+
+.degree-search .results button
+  padding: 1.5% 0 1.5% 3%;
+  border: none;
+  text-align: left;
+  background: rgba(222,224,239,0.8);
+
+.degree-search .results button:hover
+  background: rgba(166, 172, 222, 0.8);
+
+.degree-search .semester-picker
+  width: 20%;
+  margin-right: 5%;
+  border: 2px solid $primary-color;
+  background: white;
+  font-family: $font-family;
+  font-size: $font-primary-size;
+  font-weight: $font-weight-secondary;
+
+.degree-search .option
+  background: rgba(222, 224, 239, 0.8);
 
 .degree-schedule
-  padding: 2% 5% 0 5%;
+  padding: 2% 5% 2% 5%;
   align-items: center;
   justify-content: center;
   background: #f3f3f3;

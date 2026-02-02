@@ -1,79 +1,47 @@
 <script>
     import './sass/page.sass'
     import { Schedule } from '../../lib/features/schedule'
-    import { fetchDegrees } from '../../hooks/degrees'
-    import { fetchCourses } from '../../hooks/courses'
-    import { fetchSubjectsByCourse } from '../../hooks/subjects'
-    import { fetchSchedules } from '../../hooks/schedules'
+    import { SearchBar } from '../../lib/components'
+    import { fetchGroups, fetchLecturesByGroup } from '../../hooks/groups'
     import { onMount } from 'svelte';
 
-    let degrees = []
-    let all_courses = []
-    let selected_courses = []
-    let classes = []
+    let groups = [] 
     let loading = true
-    let error = ''
+    let selected_semester = ''
+    let classes = []
 
     onMount(async () => {
         try {
-            degrees = await fetchDegrees()
-            all_courses = await fetchCourses()
-        } catch (err) {
-            error = err.message
+            groups = await fetchGroups()
+        } catch (error) {
+            console.error('Error while fetching groups:', error)    
         } finally {
             loading = false
         }
-    })
+    })    
 
-    let selected = ''
-    let userSelected = false
+    const handleClick = async (item) => {
+        if (!selected_semester) alert("Selecciona un cuatrimestre")
+        const id = item.id
 
-    $: if (userSelected && selected) {
-        const degree = degrees.find(degree => degree.code === selected)
-        if (degree) {
-            selected_courses = all_courses.filter(course => course.degree_id === degree.id)
-        }
-    }
-
-    const handleClick = async (event) => {
-        const id = event.currentTarget.value
-        let subjects = await fetchSubjectsByCourse(id)
-
-        subjects = subjects.map(s => s.id)
-        if (!subjects.length) {
-            classes = []
-            return
-        }
-
-        classes = await fetchSchedules(subjects)
+        classes = await fetchLecturesByGroup(id, parseInt(selected_semester.split(' ')[1]));
+        
     }
 </script>
 
-{#if loading}
-    <div>
-        <h1>Loading...</h1>
-    </div>
+{#if (loading)}
+    <h1>Loading...</h1>
 {:else}
     <div class="degree">
-        <div class="degree-selection">
-            <div class="degree-selection-dropdown">
-                <select bind:value={selected} on:change={() => userSelected = true}>
-                    <option value="" disabled selected>Selecciona un grado</option>
-                    {#each degrees as degree}
-                        <option>{degree.code}</option>
-                    {/each}
-                </select>
-            </div>
-            <div class="degree-selection-groups">
-                {#if (!selected_courses.length)}
-                    <p class="no-course">No hay cursos</p>
-                {:else}
-                    {#each selected_courses as course}
-                        <button class="option" value={course.id} on:click={handleClick}>{course.code}<p>></p></button>
-                    {/each}
-                {/if}
-            </div>
-        </div>
+        <section class="degree-search">
+            <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
+
+            <select class="semester-picker" bind:value={selected_semester}>
+                <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
+                <option class="option">Cuatrimestre 1</option>
+                <option class="option">Cuatrimestre 2</option>
+            </select>
+        </section>
         <div class="degree-schedule">
             <Schedule id="schedule" classes={classes} />
         </div>

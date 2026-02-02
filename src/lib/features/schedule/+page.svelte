@@ -9,10 +9,9 @@
     export let classes = []
 
     $: if (classes) {
-        console.log(classes)
         loading = false
     }
-
+    
     const dayIndex = day => days.indexOf(day) + 1
     const rowStart = hour => hour - startHour + 2
 </script>
@@ -33,7 +32,7 @@
 
         {#if (classes)}
             <!-- Classes -->
-            {#each classes[0] as cls}
+            {#each classes as cls}
                 <div
                     class="class"
                     style="
