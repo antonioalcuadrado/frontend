@@ -1,6 +1,7 @@
 <script>
     import './sass/page.sass'
     import { onMount } from 'svelte'
+    import { getSemester, filterSubjectsBySemester } from '../../utils'
     import { fetchCourses } from '../../hooks/courses'
     import { fetchSubjectsByCourse } from '../../hooks/subjects'
     import { fetchSchedules } from '../../hooks/schedules'
@@ -10,7 +11,7 @@
     import { goto } from '$app/navigation'
 
     let course_selected = ""
-    let semester_selected = ""
+    let semester_selected = getSemester()
     
     let courses = []
     let subjects = []
@@ -26,7 +27,7 @@
             loading = false
         }
     })
-    
+ 
     const handleBarClick = (course) => {
         if (!course.code) {    
             course_selected = course
@@ -41,7 +42,7 @@
             const course = courses.find(c => c.code === course_selected)
             subjects = await fetchSubjectsByCourse(course.id)
             
-            subjects = subjects.filter(subject => subject.cuatrimester === parseInt(semester_selected.split(' ')[1]))
+            subjects = filterSubjectsBySemester(subjects, semester_selected)
         } else {
             console.log("Error: Falta seleccionar el curso o el cuatrimestre")
         }
@@ -74,9 +75,9 @@
             <div class="filter">
                 <label>Cuatrimestre</label>
                 <select class="semester" bind:value={semester_selected}>
-                    <option class="semester-option" value="" selected disabled>Selecciona el cuatrimestre</option>
-                        <option class="semester-option">Cuatrimestre 1</option>
-                        <option class="semester-option">Cuatrimestre 2</option>
+                    <option class="semester-option" value="" disabled>Selecciona el cuatrimestre</option>
+                    <option class="semester-option" value="1">Cuatrimestre 1</option>
+                    <option class="semester-option" value="2">Cuatrimestre 2</option> 
                 </select>
             </div>
             <button class="search" on:click={() => handleSearch()}>
@@ -90,7 +91,7 @@
                 <p class="semester">Cuatrimestre</p>
             </div>
             {#if (!subjects.length)}
-                <p>No hay ninguna asignatura por mostrar</p>
+                <p class="empty-msg">No hay ninguna asignatura por mostrar</p>
             {:else}
                 {#each subjects as subject}
                     <SubjectCard subject={subject} onClick={addSubject} />
@@ -110,7 +111,7 @@
                 <p class="semester">Cuatrimestre</p>
             </div>
             {#if (!selected_subjects.length)}
-                <p>No se ha seleccionado ninguna asignatura</p>
+                <p class="empty-msg">No se ha seleccionado ninguna asignatura</p>
             {:else}
                 {#each selected_subjects as subject}
                     <SubjectSelect subject={subject} />

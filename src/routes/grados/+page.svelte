@@ -3,11 +3,12 @@
     import { Schedule } from '../../lib/features/schedule'
     import { SearchBar } from '../../lib/components'
     import { fetchGroups, fetchLecturesByGroup } from '../../hooks/groups'
-    import { onMount } from 'svelte';
+    import { onMount } from 'svelte'
+    import { getSemester } from '../../utils'
 
     let groups = [] 
     let loading = true
-    let selected_semester = ''
+    let selected_semester = getSemester()
     let classes = []
 
     onMount(async () => {
@@ -24,7 +25,7 @@
         if (!selected_semester) alert("Selecciona un cuatrimestre")
         const id = item.id
 
-        classes = await fetchLecturesByGroup(id, parseInt(selected_semester.split(' ')[1]));
+        classes = await fetchLecturesByGroup(id, parseInt(selected_semester));
         
     }
 </script>
@@ -35,11 +36,10 @@
     <div class="degree">
         <section class="degree-search">
             <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
-
             <select class="semester-picker" bind:value={selected_semester}>
                 <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
-                <option class="option">Cuatrimestre 1</option>
-                <option class="option">Cuatrimestre 2</option>
+                <option class="option" value="1">Cuatrimestre 1</option>
+                <option class="option" value="2">Cuatrimestre 2</option>
             </select>
         </section>
         <div class="degree-schedule">
