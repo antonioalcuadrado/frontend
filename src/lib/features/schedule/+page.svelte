@@ -12,8 +12,6 @@
         loading = false
     }
     
-    $: console.log(classes)
-
     const dayIndex = day => days.indexOf(day) + 1
     const rowStart = hour => hour - startHour + 2
 </script>

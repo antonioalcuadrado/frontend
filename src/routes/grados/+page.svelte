@@ -13,7 +13,6 @@
     onMount(async () => {
         try {
             groups = await fetchGroups()
-            console.log('Groups:', groups)
         } catch (error) {
             console.error('Error while fetching groups:', error)    
         } finally {
@@ -27,7 +26,6 @@
         const id = item.id
         
         classes = await fetchLecturesByGroup(id, 2)
-        console.log(classes)
     }
 </script>
 
