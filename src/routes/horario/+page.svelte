@@ -28,23 +28,21 @@
         }
     })
  
-    const handleBarClick = (course) => {
-        if (!course.code) {    
-            course_selected = course
-        } else {
-            course_selected = course.code
-        }
+    const handleBarClick = (code) => {   
+        course_selected = code
+        handleSearch()
     }
 
     const handleSearch = async () => {
-        console.log(course_selected)
         if (course_selected && semester_selected) {
             const course = courses.find(c => c.code === course_selected)
             subjects = await fetchSubjectsByCourse(course.id)
             
             subjects = filterSubjectsBySemester(subjects, semester_selected)
+        } else if (!course_selected) {
+            alert("Selecciona un curso en el buscador con Enter.")
         } else {
-            console.log("Error: Falta seleccionar el curso o el cuatrimestre")
+            alert("Selecciona un cuatrimestre.")
         }
     }
 

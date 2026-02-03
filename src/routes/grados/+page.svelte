@@ -21,9 +21,9 @@
         }
     })    
 
-    const handleClick = async (item) => {
+    const handleClick = async (code) => {
         if (!selected_semester) alert("Selecciona un cuatrimestre")
-        const id = item.id
+        const id = groups.find(group => group.code === code).id
 
         classes = await fetchLecturesByGroup(id, parseInt(selected_semester));
         
