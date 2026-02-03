@@ -35,12 +35,18 @@
 {:else}
     <div class="degree">
         <section class="degree-search">
-            <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
-            <select class="semester-picker" bind:value={selected_semester}>
-                <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
-                <option class="option" value="1">Cuatrimestre 1</option>
-                <option class="option" value="2">Cuatrimestre 2</option>
-            </select>
+            <div class="bar-container">
+                <label>Grado </label>
+                <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
+            </div>
+            <div class="select-container">
+                <label>Cuatrimestre</label>
+                <select class="semester-picker" bind:value={selected_semester}>
+                    <option class="option" value="" selected disabled>Selecciona un cuatrimestre</option>
+                    <option class="option" value="1">Cuatrimestre 1</option>
+                    <option class="option" value="2">Cuatrimestre 2</option>
+                </select>
+            </div>
         </section>
         <div class="degree-schedule">
             <Schedule id="schedule" classes={classes} />
