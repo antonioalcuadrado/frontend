@@ -2,7 +2,7 @@
     import './sass/schedule.sass'
 
     const days = ["", "Mon", "Tue", "Wed", "Thu", "Fri"]
-    const startHour = 9
+    const start_hour = 9
     const endHour = 21
     
     let loading = true
@@ -14,15 +14,22 @@
     }
     
     const dayIndex = day => days.indexOf(day) + 1
-    const rowStart = hour => hour - startHour + 2
+    const rowStart = hour => hour - start_hour + 2
+
+    const convertHour = (hour) => {
+        const split_hour = hour.split(':')
+        const int_hour = parseInt(split_hour[0])
+
+        return int_hour
+    }
 </script>
 
 <div class="schedule">
     {#if (!loading)}
         <!-- Time labels -->
-        {#each Array(endHour - startHour) as _, i}
+        {#each Array(endHour - start_hour) as _, i}
             <div class="time">
-                {startHour + i}:00
+                {start_hour + i}:00
             </div>
         {/each}
 
@@ -38,11 +45,12 @@
                     class="class"
                     style="
                         grid-column: {cls.day + 2};
-                        grid-row: {cls.hour + 2} / span 2;
+                        grid-row: {convertHour(cls.start_hour) + 2 - start_hour} / span {convertHour(cls.end_hour) - convertHour(cls.start_hour)};
                     "
                 >
                     <strong>{cls.subject.name}</strong>
-                    <div>{cls.hour + startHour}:00</div>
+                    <div>{cls.hall.code}</div>
+                    <div>{cls.start_hour}</div>
                 </div>
             {/each}
         {/if}
