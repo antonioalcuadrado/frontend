@@ -10,7 +10,6 @@
 
     $: if (classes) {
         loading = false
-        console.log(classes)
     }
     
     const dayIndex = day => days.indexOf(day) + 1
