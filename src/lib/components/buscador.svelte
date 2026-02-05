@@ -10,7 +10,7 @@
     // Filtrado de resultados
     $: results = query.length > 0 ? data.filter(d => d.code.toLowerCase().includes(query.toLowerCase())) : []
     
-    $: if (data.filter(d => d.code === query).length > 0) results = []
+    $: if (data.filter(d => d.code.toLowerCase() === query.toLowerCase()).length > 0) results = []
 
     // Resetear el índice cuando cambia la búsqueda
     $: if (query) selected_index = -1;
