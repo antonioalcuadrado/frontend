@@ -43,7 +43,7 @@
             if (selected_index > -1) {
                 handleSelect(results[selected_index].code);
             } else {
-                handleSelect(query);
+                handleSelect(query.toUpperCase());
             }
         } else if (e.key === 'Escape') {
             results = [];
@@ -67,7 +67,7 @@
             {#each results as item, i}
                 <button 
                     class:highlighted={i === selected_index}
-                    on:click={() => handleSelect(item)}
+                    on:click={() => handleSelect(item.code)}
                     on:mouseenter={() => selected_index = i}
                 >
                     {item.code}
