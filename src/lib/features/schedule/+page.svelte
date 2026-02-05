@@ -21,6 +21,12 @@
 
         return int_hour
     }
+
+    const getHall = (cls) => {
+        if (!cls.hall) return "N/A"
+
+        return cls.hall.code
+    }
 </script>
 
 <div class="schedule">
@@ -48,7 +54,7 @@
                     "
                 >
                     <strong>{cls.subject.name}</strong>
-                    <div>{cls.hall.code}</div>
+                    <div>{getHall(cls)}</div>
                     <div>{cls.start_hour}</div>
                 </div>
             {/each}
