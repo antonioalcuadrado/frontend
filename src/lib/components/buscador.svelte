@@ -20,7 +20,7 @@
 
         if (doFetch) {
             handleClick(code);
-            query = '';
+            query = code;
         } else {
             query = code;
             handleClick(code);

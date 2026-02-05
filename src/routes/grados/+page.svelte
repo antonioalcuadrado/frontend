@@ -36,7 +36,7 @@
     <div class="degree">
         <section class="degree-search">
             <div class="bar-container">
-                <label>Grado </label>
+                <label>Grupo </label>
                 <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
             </div>
             <div class="select-container">
