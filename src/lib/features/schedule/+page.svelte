@@ -81,8 +81,8 @@
                     style="
                         grid-column: {cls.day + 2};
                         grid-row: {convertHour(cls.start_hour) + 2 - start_hour} / span {convertHour(cls.end_hour) - convertHour(cls.start_hour)};
-                        width: calc(92% / {cls.overlap_count} - 10%);
-                        margin-left: calc((92% / {cls.overlap_count}) * {cls.overlap_index});
+                        width: calc(100% / {cls.overlap_count} - 10%);
+                        margin-left: calc((100% / {cls.overlap_count}) * {cls.overlap_index});
                     "
                 >
                     <strong>{cls.subject.name}</strong>

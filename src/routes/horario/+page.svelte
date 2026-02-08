@@ -61,6 +61,10 @@
         horarioStore.set(classes)
         goto('/horario/personalizado')
     }
+    
+    const handleSelectedDeletion = (index) => {
+        selected_subjects = selected_subjects.filter((_, i) => i !== index)
+    }
 </script>
 
 <div class="horario">
@@ -111,8 +115,8 @@
             {#if (!selected_subjects.length)}
                 <p class="empty-msg">No se ha seleccionado ninguna asignatura</p>
             {:else}
-                {#each selected_subjects as subject}
-                    <SubjectSelect subject={subject} />
+                {#each selected_subjects as subject, i}
+                    <SubjectSelect subject={subject} index={i} handleClick={handleSelectedDeletion} />
                 {/each}
             {/if}
         </section>
