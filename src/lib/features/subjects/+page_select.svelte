@@ -18,6 +18,6 @@
         <p>{subject.semester}</p>
     </section>
     <button class="delete" on:click={() => handleClick(index)}>
-        <Trash size=60 color="#fff" />
+        <Trash size=1 color="#fff" />
     </button>
 </div>
