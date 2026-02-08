@@ -1,2 +1,4 @@
 export {default as Trash} from './trash.svelte'
 export {default as TrashClick} from './trash-click.svelte'
+export {default as RightArrow} from './right-arrow.svelte'
+export {default as Download} from './download.svelte'

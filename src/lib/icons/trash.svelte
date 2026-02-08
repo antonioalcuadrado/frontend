@@ -1,11 +1,11 @@
 <script>
-    export let size = 50;
+    export let size = 1;
     export let color = "#374957";
 </script>
 
 <svg 
-    width={size}% 
-    height={size}% 
+    width="{size}vw" 
+    height="{size}vw" 
     viewBox="0 0 24 24" 
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"

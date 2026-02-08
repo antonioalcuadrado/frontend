@@ -32,7 +32,6 @@
             results.push({...lecture, overlap_count: group.length, overlap_index: sorted_group.findIndex(l => l === lecture)})
         })
         
-        console.log(results)
         return results
     }
 
