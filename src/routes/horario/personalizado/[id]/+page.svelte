@@ -1,8 +1,11 @@
 <script>
     import { horarioStore } from '../../store'
+    import { goto } from '$app/navigation'
     import { Schedule } from '$lib/features/schedule'
+    import { RightArrow } from '$lib/icons'
     import html2canvas from 'html2canvas'
     import jsPDF from 'jspdf'
+    import './sass/page.sass'
 
     let pdfRef;
 
@@ -27,21 +30,24 @@
     let { data } = $props()
     
     const schedule = $derived($horarioStore[data.id])
+    
+    const goback = () => {
+        goto('/horario/personalizado')
+    }
 </script>
 
 <div>
+    <section class="download">
+        <button on:click={() => goback()} class="goback-button">
+            <RightArrow color="#fff"/>
+        </button>
+        <button on:click={downloadPDF} class="download-button">
+            Descargar horario
+        </button>
+    </section>
+
     <div class="custom-schedule-pdf" bind:this={pdfRef}>
         <Schedule classes={schedule} />
     </div>
-
-    <button on:click={downloadPDF} style="position: relative; z-index: 10; margin-top: 50px;">
-        Descargar horario
-    </button>
 </div>
 
-<style>
-    .custom-schedule-pdf {
-        position: relative;
-        padding: 5% 10% 5% 2%;
-    }
-</style>
