@@ -17,6 +17,7 @@
         if (!schedule) return
 
         schedule = schedule.filter((_, i) => i !== id)
+        horarioStore.set(schedule)
     }
 
     const handleVisualize = (id) => {
