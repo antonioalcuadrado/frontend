@@ -1,0 +1,25 @@
+@use '../../../app.sass' as *;
+
+.dropdown
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.2% 0.5% 0.2% 0.5%;
+  margin-bottom: 0.1%;
+  background: white;
+  border: none;
+  color: gray;
+  font-family: $font-family;
+  font-size: $font-primary-size;
+  font-weight: $font-weight-secondary;
+
+.dropdown:focus,
+.dropdown:active
+  outline: none;
+  box-shadow: none;
+
+.dropdown .close
+  transform: rotate(90deg);
+
+.dropdown .open
+  transform: rotate(270deg);
