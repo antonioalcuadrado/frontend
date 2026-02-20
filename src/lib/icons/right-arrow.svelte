@@ -1,9 +1,10 @@
 <script>
     export let size = 1;
     export let color = "#374957";
+    export let className = "";
 </script>
 
-<svg 
+<svg class={className}
     width="{size}vw"
     height="{size}vw"
     viewBox="0 0 24 24" 
