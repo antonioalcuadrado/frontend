@@ -82,9 +82,6 @@
                     <option class="semester-option" value="2">Cuatrimestre 2</option> 
                 </select>
             </div>
-            <button class="search" on:click={() => handleSearch()}>
-                Buscar
-            </button>
         </section>
         <section class="horario-selection-subjects">
             <div class="horario-selection-subjects-index">
