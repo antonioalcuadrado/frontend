@@ -1,6 +1,7 @@
 <script>
     import './sass/page.sass'
     import { slide, fade } from 'svelte/transition'
+    import { goto } from '$app/navigation'
     import { BigDropdown, HallCard } from '$lib/components'
     import { fetchAllHalls } from '../../hooks/halls.js'
 
