@@ -7,6 +7,8 @@
     
     let loading = true
     export let classes = []
+    export let onClick
+    export let id
 
     const overlap = (a, b) => {
         const startA = a.start_hour
@@ -73,7 +75,7 @@
     }
 </script>
 
-<div class="schedule" style="position: relative;">
+<div class="schedule" on:click={() => onClick(id)} style="position: relative;">
     {#if (!loading)}
         <!-- Time labels -->
         {#each Array(endHour - start_hour + 1) as _, i}

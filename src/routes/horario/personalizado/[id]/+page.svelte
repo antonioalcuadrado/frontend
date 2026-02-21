@@ -2,7 +2,7 @@
     import { horarioStore } from '$lib/store/horario_store'
     import { goto } from '$app/navigation'
     import { Schedule } from '$lib/features/schedule'
-    import { RightArrow } from '$lib/icons'
+    import { RightArrow, Download } from '$lib/icons'
     import html2canvas from 'html2canvas'
     import jsPDF from 'jspdf'
     import './sass/page.sass'
@@ -42,7 +42,7 @@
             <RightArrow color="#fff"/>
         </button>
         <button on:click={downloadPDF} class="download-button">
-            Descargar horario
+            Descargar horario<Download size=1 color="#fff" />
         </button>
     </section>
 
