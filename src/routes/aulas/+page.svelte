@@ -36,6 +36,10 @@
 
         return floor_halls
     }
+
+    const goToSchedule = async (hall) => {
+        goto(`/aulas/${hall.id}`)
+    }
 </script>
 
 <div class="halls">
@@ -57,7 +61,7 @@
                     <div in:fade={{duration:300}} out:fade={{duration:200}}>
                         <div class="halls-floors-halls" in:slide={{duration: 300}} out:slide={{duration:200}}>
                             {#each getFloorHalls(i) as hall}
-                                <HallCard code={hall.code} />
+                                <HallCard onClick={goToSchedule} hall={hall} />
                             {/each}
                         </div>
                     </div>
