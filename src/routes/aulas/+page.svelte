@@ -1,10 +1,12 @@
 <script>
     import './sass/page.sass'
-    import { BigDropdown } from '$lib/components'
+    import { slide, fade } from 'svelte/transition'
+    import { BigDropdown, HallCard } from '$lib/components'
     import { fetchAllHalls } from '../../hooks/halls.js'
 
     let halls = []
     let floors = -1
+    let open = [false, false, false]
 
     const updateFloors = (code) => {
         const number_part = code.replace(/\D/g, "")
@@ -22,8 +24,16 @@
         const data = await fetchAllHalls()
         halls = data.filter((data) => data.code.startsWith(value));
         halls.forEach(hall => updateFloors(hall.code))
+    }
 
-        console.log(data)
+    const handleDrop = (i) => {
+        open[i] = !open[i]
+    }
+
+    const getFloorHalls = (i) => {
+        const floor_halls = halls.filter((hall) => parseInt(hall.code[2]) === i)
+
+        return floor_halls
     }
 </script>
 
@@ -41,7 +51,16 @@
     <section class="halls-floors">
         {#if floors > -1}
             {#each Array(floors + 1) as _, i}
-                <BigDropdown name="Planta {i}" />
+                <BigDropdown onClick={handleDrop} name="Planta {i}" />
+                {#if open[i]}
+                    <div in:fade={{duration:300}} out:fade={{duration:200}}>
+                        <div class="halls-floors-halls" in:slide={{duration: 300}} out:slide={{duration:200}}>
+                            {#each getFloorHalls(i) as hall}
+                                <HallCard code={hall.code} />
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
             {/each}
         {:else}
             <p style="margin-left: 2%; color: gray;">No hay plantas con clases en este edificio</p>

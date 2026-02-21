@@ -5,7 +5,7 @@ body, html
 
 .halls
   background: #f3f3f3;
-  height: 92dvh;
+  min-height: 92dvh;
 
 .halls-selector
   width: 100%;
@@ -29,3 +29,19 @@ body, html
   font-family: $font-family;
   font-size: $font-primary-size;
   font-weight: $font-weight-secondary;
+
+.halls-floors-halls
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+
+  .hall-card
+    background: $primary-color;
+    cursor: pointer;
+
+  .hall-card:nth-child(12n + 1),
+  .hall-card:nth-child(12n + 3), 
+  .hall-card:nth-child(12n + 5),
+  .hall-card:nth-child(12n + 8),
+  .hall-card:nth-child(12n + 10),
+  .hall-card:nth-child(12n + 12)
+    background: #a2c6f7;
