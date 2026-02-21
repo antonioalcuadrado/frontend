@@ -4,14 +4,14 @@
     export let name = "N/A";
     export let onClick;
 
-    let close = true;
+    export let open = false;
 
     const handleClick = () => {
-        close = !close;
+        open = !open;
         onClick(parseInt(name[7]));
     }
 </script>
 
 <button class="dropdown" on:click={handleClick}>
-    {name} <RightArrow className={close ? "close" : "open"} />
+    {name} <RightArrow className={open ? "open" : "close"} />
 </button>
