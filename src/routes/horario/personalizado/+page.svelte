@@ -1,10 +1,10 @@
 <script>
     import './sass/page.sass'
-    import { horarioStore } from '../store'
+    import { horarioStore } from '$lib/store/horario_store'
     import { goto } from '$app/navigation'
     import { fetchSchedules } from '../../../hooks/schedules'
-    import { Schedule } from '../../../lib/features/schedule'
-    import { Trash, RightArrow } from '../../../lib/icons'
+    import { Schedule } from '$lib/features/schedule'
+    import { Trash, RightArrow } from '$lib/icons'
 
     let loading = true
     $: schedule = $horarioStore

@@ -5,9 +5,9 @@
     import { fetchCourses } from '../../hooks/courses'
     import { fetchSubjectsByCourse } from '../../hooks/subjects'
     import { fetchSchedules } from '../../hooks/schedules'
-    import { SubjectCard, SubjectSelect } from '../../lib/features/subjects'
-    import { SearchBar } from '../../lib/components'
-    import { horarioStore } from './store'
+    import { SubjectCard, SubjectSelect } from '$lib/features/subjects'        
+    import { SearchBar } from '$lib/components'
+    import { horarioStore } from '$lib/store/horario_store'
     import { goto } from '$app/navigation'
 
     let course_selected = ""

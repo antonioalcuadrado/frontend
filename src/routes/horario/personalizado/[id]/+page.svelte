@@ -1,5 +1,5 @@
 <script>
-    import { horarioStore } from '../../store'
+    import { horarioStore } from '$lib/store/horario_store'
     import { goto } from '$app/navigation'
     import { Schedule } from '$lib/features/schedule'
     import { RightArrow } from '$lib/icons'
