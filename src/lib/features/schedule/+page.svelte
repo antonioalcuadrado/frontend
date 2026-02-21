@@ -19,6 +19,7 @@
 
     const getOverlaped = (lectures) => {
         let results = []
+        console.log(lectures)
 
         lectures.map(lecture => {
             const start = lecture.start_hour
@@ -56,6 +57,20 @@
 
         return cls.hall.code
     }
+    
+    const classWidth = (cls) => {
+        if (cls.overlap_count > 1) {
+            return 82.5 / cls.overlap_count
+        }
+        return 92
+    }
+
+    const classMargin = (cls) => {
+        if (cls.overlap_count > 1) {
+            return (97 / cls.overlap_count * cls.overlap_index) + 2 * cls.overlap_index
+        }
+        return 0
+    }
 </script>
 
 <div class="schedule" style="position: relative;">
@@ -80,8 +95,8 @@
                     style="
                         grid-column: {cls.day + 2};
                         grid-row: {convertHour(cls.start_hour) + 2 - start_hour} / span {convertHour(cls.end_hour) - convertHour(cls.start_hour)};
-                        width: calc(100% / {cls.overlap_count} - 10%);
-                        margin-left: calc((100% / {cls.overlap_count}) * {cls.overlap_index});
+                        width: calc({classWidth(cls)}%);
+                        margin-left: calc({classMargin(cls)}%);
                     "
                 >
                     <strong>{cls.subject.name}</strong>
