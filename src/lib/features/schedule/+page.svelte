@@ -21,7 +21,6 @@
 
     const getOverlaped = (lectures) => {
         let results = []
-        console.log(lectures)
 
         lectures.map(lecture => {
             const start = lecture.start_hour

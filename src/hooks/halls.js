@@ -3,13 +3,14 @@ import { PUBLIC_API_URL } from '$env/static/public'
 const BASE_URL = `${PUBLIC_API_URL}halls`; // Adjust to your backend URL
 
 // Fetch all halls
-export async function fetchAllHalls() {
+export async function fetchAllHalls(fetch, setHeaders) {
   try {
     const response = await fetch(`${BASE_URL}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to fetch halss');
     }
+    setHeaders({ 'cache-control': 'max-age=600' })
     const data = await response.json();
     return data;
   } catch (err) {
@@ -19,14 +20,14 @@ export async function fetchAllHalls() {
 }
 
 // Fetch hall by id
-export async function fetchHallById(id) {
+export async function fetchHallById(id, fetch) {
     try {
         const response = await fetch(`${BASE_URL}/${id}`);
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || "Failed to fetch hall by id");
         }
-        const data = response.json();
+        const data = await response.json();
         return data;
     } catch (err) {
         console.error("Error fetching hall by id:", err);
@@ -35,7 +36,7 @@ export async function fetchHallById(id) {
 }
 
 // Fetch lectures from a hall
-export async function fetchHallLectures(id) {
+export async function fetchHallLectures(id, semester, fetch) {
     try {
         const response = await fetch(`${BASE_URL}/${id}/lectures`);
         if (!response.ok) {

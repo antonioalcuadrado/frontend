@@ -3,14 +3,21 @@
     import { slide, fade } from 'svelte/transition'
     import { goto } from '$app/navigation'
     import { BigDropdown, HallCard } from '$lib/components'
-    import { fetchAllHalls } from '../../hooks/halls.js'
     import { buildingStore, openFloorsStore } from '$lib/store/building_store'
 
+    let { data } = $props()
     let halls = []
-    let floors = -1
-    $: open = $openFloorsStore
-    $: selected = $buildingStore
-    
+    let floors = $state(-1)
+    let open = $state($openFloorsStore)
+    let selected = $state("default")
+
+    const onSelectChange = (e) => { 
+        const value = e.target.value
+        open = [false, false, false]
+        openFloorsStore.set(open)
+        buildingStore.set(value)
+    }
+
     const updateFloors = (code) => {
         const number_part = code.replace(/\D/g, "")
         const first_digit = parseInt(number_part[0], 10)
@@ -20,21 +27,22 @@
         }
     }
 
-    $: if (selected) {
-        handleChange(selected)
-        buildingStore.set(selected)
-    }
-
     const handleChange = async (value) => {
         floors = -1
 
-        const data = await fetchAllHalls()
-        halls = data.filter((data) => data.code.startsWith(value));
+        halls = data.halls.filter((data) => data.code.startsWith(value));
         halls.forEach(hall => updateFloors(hall.code))
     }
 
+    buildingStore.subscribe((value) => {
+        if (value && value !== selected) {
+            selected = value
+            handleChange(selected)
+        }
+    })
+
     const handleDrop = (i) => {
-        open[i] = !open[i]
+        open = open.map((v, index) => index === i ? !v : v)
         openFloorsStore.set(open)
     }
 
@@ -52,7 +60,7 @@
 <div class="halls">
     <section class="halls-selector">
         <label>Edificio</label>
-        <select bind:value={selected}>
+        <select value={selected} on:change={onSelectChange}>
             <option value="default" disabled selected>Selecciona un edificio</option>
             <option value="MD">Madrid</option>
             <option value="BE">Berlín</option>
