@@ -3,13 +3,15 @@ import { PUBLIC_API_URL } from '$env/static/public'
 const BASE_URL = `${PUBLIC_API_URL}courses`;
 
 // Fetch all courses
-export async function fetchCourses() {
+export async function fetchCourses(fetch, setHeaders) {
   try {
     const response = await fetch(BASE_URL);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to fetch courses');
     }
+    setHeaders({'cache-control': 'max-age=600'})
+
     const data = await response.json();
     return data;
   } catch (err) {

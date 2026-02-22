@@ -3,13 +3,15 @@ import { PUBLIC_API_URL } from '$env/static/public'
 const BASE_URL = `${PUBLIC_API_URL}groups`; // Adjust to your backend URL
 
 // Fetch all groups
-export async function fetchGroups() {
+export async function fetchGroups(fetch, setHeaders) {
   try {
     const response = await fetch(BASE_URL);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to fetch groups');
     }
+    setHeaders({'cache-control': 'max-age=600'})
+
     const data = await response.json();
     return data;
   } catch (err) {

@@ -9,6 +9,10 @@
     export let classes = []
     export let onClick
     export let id
+    
+    if (!onClick) {
+        onClick = (e) => {e.default}
+    }
 
     const overlap = (a, b) => {
         const startA = a.start_hour

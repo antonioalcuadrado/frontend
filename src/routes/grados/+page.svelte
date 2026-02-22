@@ -2,24 +2,19 @@
     import './sass/page.sass'
     import { Schedule } from '../../lib/features/schedule'
     import { SearchBar } from '../../lib/components'
-    import { fetchGroups, fetchLecturesByGroup } from '../../hooks/groups'
-    import { onMount } from 'svelte'
+    import { fetchLecturesByGroup } from '../../hooks/groups'
     import { getSemester } from '../../utils'
 
-    let groups = [] 
-    let loading = true
+    let { data } = $props() 
     let selected_semester = getSemester()
+    let loading = $state(true)
     let classes = []
 
-    onMount(async () => {
-        try {
-            groups = await fetchGroups()
-        } catch (error) {
-            console.error('Error while fetching groups:', error)    
-        } finally {
+    $effect(() => {
+        if (data.groups) {
             loading = false
         }
-    })    
+    })
 
     const handleClick = async (code) => {
         if (!selected_semester) alert("Selecciona un cuatrimestre")
@@ -37,7 +32,7 @@
         <section class="degree-search">
             <div class="bar-container">
                 <label>Grupo </label>
-                <SearchBar handleClick={handleClick} data={groups} doFetch={true} />
+                <SearchBar handleClick={handleClick} data={data.groups} doFetch={true} />
             </div>
             <div class="select-container">
                 <label>Cuatrimestre</label>
