@@ -95,6 +95,15 @@ body, html
   font-size: $font-primary-size;
   font-weight: $font-weight-secondary;
 
+.horario-selection-subjects button
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+.horario-selection-subjects button:hover
+  background-color: $button-hover-color;
+
+.horario-selection-subjects button:active
+  transform: translateY(1px);
+
 .horario-selection-subjects-index
   display: flex;
   margin-top: 3%;
@@ -145,10 +154,10 @@ body, html
   font-family: $font-family;
   font-size: $font-secondary-size;
   font-weight: $font-weight-secondary;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
 .horario-selected-title .create:hover
-  transform: translateY(-2px);
+  background-color: $button-hover-color;
   box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 
 .horario-selected-title .create:active
@@ -167,6 +176,14 @@ body, html
   font-size: $font-primary-size;
   font-weight: $font-weight-secondary;
 
+.horario-selected-subjects button
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+.horario-selected-subjects button:hover
+  background-color: $button-hover-color;
+
+.horario-selected-subjects button:active
+  transform: translateY(1px);
 
 .horario-selected-subjects-index
   display: flex;

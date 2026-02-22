@@ -19,7 +19,7 @@
         <p>Horario personalizado</p>
         {#if !loading}
             <button class="download" on:click={() => downloadSchedule(pdfRef)}>
-                Descargar horario <Download size=0.9 color="#fff" />
+                <div>Descargar horario <Download size=0.9 color="#fff" /></div>
             </button>
         {/if}
     </section>
