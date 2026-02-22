@@ -2,7 +2,6 @@
     import './sass/page.sass'
     import { onMount } from 'svelte'
     import { getSemester, filterSubjectsBySemester } from '../../utils'
-    import { fetchCourses } from '../../hooks/courses'
     import { fetchSubjectsByCourse } from '../../hooks/subjects'
     import { fetchSchedules } from '../../hooks/schedules'
     import { SubjectCard, SubjectSelect } from '$lib/features/subjects'        
@@ -13,21 +12,17 @@
     let course_selected = ""
     let semester_selected = getSemester()
     
-    let courses = []
-    let subjects = []
-    let selected_subjects = []
-    let loading = true
+    let { data } = $props()
+    let subjects = $state([])
+    let selected_subjects = $state([])
+    let loading = $state(true)
     
-    onMount(async () => {
-        try {
-            courses = await fetchCourses()
-        } catch (error) {
-            console.log(error)
-        } finally {
+    $effect(() => {
+        if (data.courses) {
             loading = false
         }
     })
- 
+
     const handleBarClick = (code) => {   
         course_selected = code
         handleSearch()
@@ -35,7 +30,7 @@
 
     const handleSearch = async () => {
         if (course_selected && semester_selected) {
-            const course = courses.find(c => c.code === course_selected)
+            const course = data.courses.find(c => c.code === course_selected)
             subjects = await fetchSubjectsByCourse(course.id)
             
             subjects = filterSubjectsBySemester(subjects, semester_selected)
@@ -72,7 +67,7 @@
         <section class="horario-selection-filters">
             <div class="filter">
                 <label>Curso</label>
-                <SearchBar data={courses} handleClick={handleBarClick} />
+                <SearchBar data={data.courses} handleClick={handleBarClick} />
             </div>
             <div class="filter">
                 <label>Cuatrimestre</label>
