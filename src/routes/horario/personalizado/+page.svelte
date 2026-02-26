@@ -62,11 +62,10 @@
     }
 </script>
 
-<div class="custom-schedule-grid">
-    {#if (!loading)}
-        <section class="custom-schedule-filters">
-            <p>Horarios personalizados</p>
-            <form on:submit={searchSchedules}>
+<div>
+    <section class="custom-schedule-filters">
+        <form on:submit={searchSchedules}>
+            <div>
                 <label>Tiempo de espera máximo</label>
                 <input 
                     type="number"
@@ -76,6 +75,8 @@
                     on:input={checkWaitingTime}
                     placeholder="Inserte horas de espera"
                     />
+            </div>
+            <div>
                 <label>Horas máximas por día</label>
                 <input 
                     type="number"
@@ -85,23 +86,27 @@
                     on:input={checkMaxHours}
                     placeholder="Inserte número de horas" 
                     />
-                <button type="submit">Buscar</button>
-            </form>
-        </section>
-        {#each schedule as sch, i}
-            {#if (schedules_view.includes(sch))}
-                <div class="container">
-                    <Schedule classes={sch} onClick={handleVisualize} id={i} />
-                    <div class="action-buttons">
-                        <button on:click={() => handleSave(sch)}>
-                            Guardar en perfil<Save size=0.9 color="#fff" />
-                        </button>
-                        <button class="trash" on:click={() => handleDelete(i)}>
-                            <Trash size=0.9 color="#fff"/>
-                        </button>
+            </div>
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+    <section class="custom-schedule-grid">
+        {#if (!loading)}
+            {#each schedule as sch, i}
+                {#if (schedules_view.includes(sch))}
+                    <div class="container">
+                        <Schedule classes={sch} onClick={handleVisualize} id={i} />
+                        <div class="action-buttons">
+                            <button on:click={() => handleSave(sch)}>
+                                Guardar en perfil<Save size=0.9 color="#fff" />
+                            </button>
+                            <button class="trash" on:click={() => handleDelete(i)}>
+                                <Trash size=0.9 color="#fff"/>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            {/if}
-        {/each}
-    {/if}
+                {/if}
+            {/each}
+        {/if}
+    </section>
 </div>
