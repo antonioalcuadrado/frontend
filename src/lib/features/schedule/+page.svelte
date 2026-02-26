@@ -108,7 +108,8 @@
                         <div>{cls.start_hour}</div>
                     </section>
                     <section class="subject-info">
-                        <strong>{cls.subject.name}</strong>
+                        <strong>{cls.subject.alias}</strong>
+                        <div>{cls.teacher.name}</div>
                         <div>{getHall(cls)}</div>
                     </section>
                     <section class="end-hour">
