@@ -104,9 +104,16 @@
                         margin-left: calc({classMargin(cls)}%);
                     "
                 >
-                    <strong>{cls.subject.name}</strong>
-                    <div>{getHall(cls)}</div>
-                    <div>{cls.start_hour}</div>
+                    <section class="start-hour">
+                        <div>{cls.start_hour}</div>
+                    </section>
+                    <section class="subject-info">
+                        <strong>{cls.subject.name}</strong>
+                        <div>{getHall(cls)}</div>
+                    </section>
+                    <section class="end-hour">
+                        <div>{cls.end_hour}</div>
+                    </section>
                 </div>
             {/each}
         {/if}
