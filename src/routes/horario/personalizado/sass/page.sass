@@ -4,12 +4,56 @@ html, body
   margin: 0;
   background: #f3f3f3;
 
-body
-  overflow-y: scroll;
+.custom-schedule-filters
+  width:90%;
+  padding: 0.6% 5% 0.65% 5%;
+  display: flex;
+  flex-direction: row;
+  background: $secondary-color;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-family: $font-family;
+  font-size: $font-secondary-size;
+  font-weight: $font-weight-primary;
+
+.custom-schedule-filters form
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+.custom-schedule-filters button
+  width: 20%;
+  background: $detail-color;
+  border: none;
+  color: white;
+  font-family: $font-family;
+  font-size: $font-secondary-size;
+  font-weight: $font-weight-secondary;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+.custom-schedule-filters button:hover
+  background-color: $button-hover-color;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+
+.custom-schedule-filters button:active
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+.custom-schedule-filters form div
+  width: 30%;
+
+.custom-schedule-filters form input
+  width: 45%;
+  margin-left: 2%;
+  border: 2px solid $primary-color;
+  background: white;
+  font-family: $font-family;
+  font-size: $font-secondary-size;
+  font-weight: $font-weight-secondary;
 
 .custom-schedule-grid
-  margin-left: 2%;
-  margin-top: 2%;
+  padding: 2%;
   display: grid;
   grid-template-columns: repeat(auto-fit, 30%);
   grid-auto-rows: auto;
