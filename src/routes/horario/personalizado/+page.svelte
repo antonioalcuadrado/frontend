@@ -4,14 +4,20 @@
     import { customStore } from '$lib/store/custom_schedule_store'
     import { goto } from '$app/navigation'
     import { fetchSchedules } from '../../../hooks/schedules'
+    import { filterCustomSchedules } from '../../../utils'
     import { Schedule } from '$lib/features/schedule'
     import { Trash, Save } from '$lib/icons'
 
     let loading = true
     $: schedule = $horarioStore
+    let schedules_view
+    
+    let max_hours_value = 12
+    let waiting_time_value = 0
 
     $: if (schedule) {
         loading = false
+        schedules_view = schedule
     }
 
     const handleDelete = (id) => {
@@ -28,22 +34,74 @@
     const handleSave = (sch) => {
         customStore.set(sch)
     }
+
+    const checkWaitingTime = () => {
+        if (waiting_time_value < 0)
+            waiting_time_value = 0
+        else if (waiting_time_value > 10)
+            waiting_time_value = 10
+    }
+
+    const checkMaxHours = () => {
+        if (max_hours_value < 0)
+            max_hours_value = 0
+        else if (max_hours_value > 12)
+            max_hours_value = 12
+    }
+
+    const checkFilterEmpty = (value) => {
+        return !value && value != 0
+    } 
+
+    const searchSchedules = () => {
+        if (checkFilterEmpty(max_hours_value) || checkFilterEmpty(waiting_time_value)) return;
+
+        schedules_view = filterCustomSchedules(schedule, max_hours_value, waiting_time_value)
+
+        console.log(schedules_view)
+    }
 </script>
 
 <div class="custom-schedule-grid">
     {#if (!loading)}
+        <section class="custom-schedule-filters">
+            <p>Horarios personalizados</p>
+            <form on:submit={searchSchedules}>
+                <label>Tiempo de espera máximo</label>
+                <input 
+                    type="number"
+                    min="0"
+                    max="10"
+                    bind:value={waiting_time_value}
+                    on:input={checkWaitingTime}
+                    placeholder="Inserte horas de espera"
+                    />
+                <label>Horas máximas por día</label>
+                <input 
+                    type="number"
+                    min="0"
+                    max="12"
+                    bind:value={max_hours_value}
+                    on:input={checkMaxHours}
+                    placeholder="Inserte número de horas" 
+                    />
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
         {#each schedule as sch, i}
-            <div class="container">
-                <Schedule classes={sch} onClick={handleVisualize} id={i} />
-                <div class="action-buttons">
-                    <button on:click={() => handleSave(sch)}>
-                        Guardar en perfil<Save size=0.9 color="#fff" />
-                    </button>
-                    <button class="trash" on:click={() => handleDelete(i)}>
-                        <Trash size=0.9 color="#fff"/>
-                    </button>
+            {#if (schedules_view.includes(sch))}
+                <div class="container">
+                    <Schedule classes={sch} onClick={handleVisualize} id={i} />
+                    <div class="action-buttons">
+                        <button on:click={() => handleSave(sch)}>
+                            Guardar en perfil<Save size=0.9 color="#fff" />
+                        </button>
+                        <button class="trash" on:click={() => handleDelete(i)}>
+                            <Trash size=0.9 color="#fff"/>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            {/if}
         {/each}
     {/if}
 </div>
