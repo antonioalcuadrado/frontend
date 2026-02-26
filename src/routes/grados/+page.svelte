@@ -8,7 +8,7 @@
     let { data } = $props() 
     let selected_semester = getSemester()
     let loading = $state(true)
-    let classes = []
+    let classes = $state([])
 
     $effect(() => {
         if (data.groups) {
@@ -18,10 +18,9 @@
 
     const handleClick = async (code) => {
         if (!selected_semester) alert("Selecciona un cuatrimestre")
-        const id = groups.find(group => group.code === code).id;
+        const id = data.groups.find(group => group.code === code).id;
         
         classes = await fetchLecturesByGroup(id, parseInt(selected_semester));
-        
     }
 </script>
 
